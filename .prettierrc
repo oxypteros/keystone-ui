@@ -2,7 +2,7 @@
   "useTabs": false,
   "singleQuote": true,
   "trailingComma": "none",
-  "plugins": ["prettier-plugin-go-template"],
+  "plugins": ["prettier-plugin-toml", "prettier-plugin-go-template"],
   "overrides": [
     {
       "files": ["*.html"],
