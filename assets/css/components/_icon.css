@@ -1,0 +1,5 @@
+@layer components {
+  .ks-icon {
+    @apply size-4;
+  }
+}
