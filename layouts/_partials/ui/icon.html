@@ -1,0 +1,74 @@
+{{- /*
+  KEYSTONE UI: ICON PARTIAL
+  -------------------------
+  Renders an SVG icon from `assets/icons/*.svg``.
+  Automatically handles accessibility and class merging.
+
+  ARGUMENTS (dict):
+  - "name"       (string, required) : Filename without extension (e.g., "github")
+  - "class"      (string, optional) : Tailwind/CSS classes to append
+  - "ariaHidden" (string, optional) : Default "true". Set "false" if semantic.
+  - "role"       (string, optional) : Default "img".
+  - "focusable"  (string, optional) : Default "false".
+  - "attributes" (string, optional) : Any other raw HTML attributes (e.g. "id='my-icon'")
+
+  Documentation:
+  https://keystone-ui.oxypteros.com/docs/components/icon
+*/}}
+
+{{- $customClass := "ks-icon" }}
+{{- $name := .name -}}
+{{- $class := .class -}}
+{{- $finalClass := $customClass -}}
+{{- with $class -}}
+  {{- $finalClass = printf "%s %s" $customClass . -}}
+{{- end -}}
+
+{{- /* A11y Defaults */}}
+{{- $ariaHidden := .ariaHidden | default "true" -}}
+{{- $focusable := .focusable | default "false" -}}
+{{- $role := .role | default "img" -}}
+{{- $attributes := .attributes | default "" | safeHTMLAttr -}}
+
+{{- /* Load icon */}}
+{{- $icon := resources.Get (printf "icons/%s.svg" $name) -}}
+{{- with $icon }}
+  {{- $content := .Content -}}
+
+  {{- /*
+    Clean up:
+    - (?i) Case insensitive
+    - \s+ matches one or more whitespace (space, tab, newline)
+    - ["'] matches single OR double quotes
+    - [^"']* matches content inside the quotes
+  */}}
+  {{- $pattern := `(?i)\s+(class)=["'][^"']*["']` -}}
+  {{- $content := replaceRE $pattern "" $content -}}
+
+  {{- /* Inject attributes */}}
+  {{- $finalAttrs :=  printf ` class="%s %s" aria-hidden="%s" focusable="%s" role="%s" %s` $customClass $class $ariaHidden $focusable $role $attributes -}}
+
+  {{- $content = replace $content "<svg" (printf "<svg%s" $finalAttrs) -}}
+  {{- $content | safeHTML -}}
+{{- else }}
+  {{- warnf "Keystone UI: Icon '%s' not found in assets/icons/" $name -}}
+  {{- if hugo.IsServer }}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="{{ $finalClass }} rounded-sm border border-red-500 bg-red-100 text-red-500"
+      aria-label="Missing Icon: {{ $name }}"
+      role="img"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  {{- end }}
+{{- end }}
