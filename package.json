@@ -1,0 +1,32 @@
+{
+  "name": "keystone-ui",
+  "version": "0.0.1",
+  "description": "Keystone UI Hugo starter boilerplate",
+  "homepage": "https://github.com/oxypteros/keystone-ui#readme",
+  "bugs": {
+    "url": "https://github.com/oxypteros/keystone-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oxypteros/keystone-ui.git"
+  },
+  "license": "MIT",
+  "author": "oxypteros",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "format": "rustywind --write layouts content assets themes && prettier --write .",
+    "ci:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "prettier": "^3.7.4",
+    "prettier-plugin-go-template": "^0.0.15",
+    "rustywind": "^0.24.3",
+    "tailwindcss": "^4.1.18"
+  },
+  "engines": {
+    "node": ">=24.12.0",
+    "hugo": "0.152.2"
+  }
+}
