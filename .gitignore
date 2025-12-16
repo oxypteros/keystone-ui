@@ -1,0 +1,10 @@
+# Secrets
+.env
+
+# Node
+node_modules/
+
+# Hugo
+public/
+hugo_stats.json
+.hugo_build.lock
