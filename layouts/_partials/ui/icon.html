@@ -17,8 +17,9 @@
 */}}
 
 {{- $customClass := "ks-icon" }}
+
 {{- $name := .name -}}
-{{- $class := .class -}}
+{{- $class := .class | default "" -}}
 {{- $finalClass := $customClass -}}
 {{- with $class -}}
   {{- $finalClass = printf "%s %s" $customClass . -}}
