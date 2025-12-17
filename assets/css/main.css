@@ -7,6 +7,7 @@
 
 /* Keystone Components */
 @import './components/_icon.css';
+@import './components/_button.css';
 
 @theme {
   --radius: var(--radius);
@@ -41,4 +42,16 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  /* Set default border and outline color */
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /* Set cursor-pointer for Buttons */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    @apply cursor-pointer;
+  }
 }
