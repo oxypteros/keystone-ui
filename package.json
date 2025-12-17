@@ -15,14 +15,15 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "format": "rustywind --write layouts content assets themes && prettier --write .",
+    "format": "prettier --write .",
     "ci:check": "prettier --check ."
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
     "prettier": "^3.7.4",
     "prettier-plugin-go-template": "^0.0.15",
-    "rustywind": "^0.24.3",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "prettier-plugin-toml": "^2.0.6",
     "tailwindcss": "^4.1.18"
   },
   "engines": {

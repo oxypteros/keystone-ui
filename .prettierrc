@@ -1,12 +1,19 @@
 {
-  "useTabs": false,
+  "semi": true,
   "singleQuote": true,
-  "trailingComma": "none",
-  "plugins": ["prettier-plugin-go-template"],
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "plugins": ["prettier-plugin-go-template", "prettier-plugin-tailwindcss"],
   "overrides": [
     {
       "files": ["*.html"],
       "options": {
+        "printWidth": 120,
         "parser": "go-template"
       }
     }
