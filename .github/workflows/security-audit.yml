@@ -165,6 +165,6 @@ jobs:
             echo "No changes to security badge."
           else
             git commit -m "🤖 Update Security Badge: ${{ needs.analyze.result }} [skip ci]"
-            git push origin badges
+            git push origin ${{ github.ref_name }}
             echo "Badge updated."
           fi
