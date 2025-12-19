@@ -99,3 +99,64 @@ jobs:
       uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
+
+  security-badge:
+    name: Generate Security Badge
+    needs: analyze
+    if: always() # Run even if analysis fails
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for branch switching
+
+      - name: Generate Badge SVG
+        run: |
+          mkdir -p temp_badges
+
+          if [ "${{ needs.analyze.result }}" == "success" ]; then
+            TEXT="PASS"
+            COLOR="266429" # Your Custom Green
+          else
+            TEXT="FAIL"
+            COLOR="bc2c00" # Red
+          fi
+
+          echo "Generating Security Badge: $TEXT ($COLOR)"
+
+          curl -s -G "https://img.shields.io/badge/Security-$TEXT-$COLOR" \
+            -d style=flat \
+            -d labelColor=%23F0F0F0 \
+            > "temp_badges/security.svg"
+
+          - name: Deploy Badge
+            run: |
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+              # Check if 'badges' branch exists
+              if git ls-remote --exit-code --heads origin badges; then
+                git fetch origin badges
+                git checkout badges
+              else
+                echo "Creating orphan badges branch"
+                git checkout --orphan badges
+                git rm -rf .
+              fi
+
+              # Move badge into place
+              cp temp_badges/security.svg .
+
+              # Commit and Push
+              git add security.svg
+              
+              # Only commit if changed
+              if git diff --staged --quiet; then
+                echo "No changes to security badge."
+              else
+                git commit -m "🛡️ Update Security Badge: ${{ needs.analyze.result }}"
+                git push origin badges
+              fi
