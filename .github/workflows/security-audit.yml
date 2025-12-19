@@ -19,6 +19,10 @@ on:
   schedule:
     - cron: '23 7 * * 1'
 
+env:
+  # Configuration Variables
+  BADGE_FOLDER: ".github/badges"
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
@@ -114,49 +118,53 @@ jobs:
           fetch-depth: 0 # Fetch all history for branch switching
 
       - name: Generate Badge SVG
+        id: badge_logic
         run: |
-          mkdir -p temp_badges
-
           if [ "${{ needs.analyze.result }}" == "success" ]; then
-            TEXT="PASS"
+            NEW_STATUS="PASS"
             COLOR="266429"
           else
-            TEXT="FAIL"
-            COLOR="bc2c00"
+            NEW_STATUS="FAIL"
+            COLOR="BC2C00"
           fi
 
-          echo "Generating Security Badge: $TEXT ($COLOR)"
+          BADGE_FILE="$BADGE_FOLDER/security.svg"  
+          
+          mkdir -p $BADGE_FOLDER
 
-          curl -s -G "https://img.shields.io/badge/Security-$TEXT-$COLOR" \
+          if [ -f "$BADGE_FILE" ]; then
+             if grep -q "$NEW_STATUS" "$BADGE_FILE"; then
+                echo "✅ Status is still $NEW_STATUS. Badge is up to date."
+                echo "commit_required=false" >> $GITHUB_OUTPUT
+                exit 0
+             fi
+          fi
+
+          echo "🔄 Status changed to $NEW_STATUS. Generating..."
+          
+          curl -s -G "https://img.shields.io/badge/Security-$NEW_STATUS-$COLOR" \
             -d style=flat \
             -d labelColor=%23FEFEFE \
-            > "temp_badges/security.svg"
+            > "$BADGE_FILE"
 
-      - name: Deploy Badge
+          echo "commit_required=true" >> $GITHUB_OUTPUT
+
+      - name: Deploy Badge (Only if changed)
+        if: steps.badge_logic.outputs.commit_required == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Check if 'badges' branch exists
-          if git ls-remote --exit-code --heads origin badges; then
-            git fetch origin badges
-            git checkout badges
-          else
-            echo "Creating orphan badges branch"
-            git checkout --orphan badges
-            git rm -rf .
-          fi
-
-          # Move badge into place
-          cp temp_badges/security.svg .
-
-          # Commit and Push
-          git add security.svg
+          
+          git checkout ${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }} --rebase
+          
+          git add $BADGE_FOLDER/security.svg
               
-          # Only commit if changed
+          # 💾 COMMIT & PUSH
           if git diff --staged --quiet; then
             echo "No changes to security badge."
           else
-            git commit -m "🤖 Update Security Badge: ${{ needs.analyze.result }}"
+            git commit -m "🤖 Update Security Badge: ${{ needs.analyze.result }} [skip ci]"
             git push origin badges
+            echo "Badge updated."
           fi
