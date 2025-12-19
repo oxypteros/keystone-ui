@@ -9,7 +9,7 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL Advanced"
+name: "Security"
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '23 9 * * 6'
+    - cron: '23 7 * * 1'
 
 jobs:
   analyze:
@@ -119,17 +119,17 @@ jobs:
 
           if [ "${{ needs.analyze.result }}" == "success" ]; then
             TEXT="PASS"
-            COLOR="266429" # Your Custom Green
+            COLOR="266429"
           else
             TEXT="FAIL"
-            COLOR="bc2c00" # Red
+            COLOR="bc2c00"
           fi
 
           echo "Generating Security Badge: $TEXT ($COLOR)"
 
           curl -s -G "https://img.shields.io/badge/Security-$TEXT-$COLOR" \
             -d style=flat \
-            -d labelColor=%23F0F0F0 \
+            -d labelColor=%23FEFEFE \
             > "temp_badges/security.svg"
 
       - name: Deploy Badge
@@ -157,6 +157,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to security badge."
           else
-            git commit -m "🛡️ Update Security Badge: ${{ needs.analyze.result }}"
+            git commit -m "🤖 Update Security Badge: ${{ needs.analyze.result }}"
             git push origin badges
           fi
