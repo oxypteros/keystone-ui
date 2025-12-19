@@ -132,31 +132,31 @@ jobs:
             -d labelColor=%23F0F0F0 \
             > "temp_badges/security.svg"
 
-          - name: Deploy Badge
-            run: |
-              git config user.name "github-actions[bot]"
-              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Deploy Badge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-              # Check if 'badges' branch exists
-              if git ls-remote --exit-code --heads origin badges; then
-                git fetch origin badges
-                git checkout badges
-              else
-                echo "Creating orphan badges branch"
-                git checkout --orphan badges
-                git rm -rf .
-              fi
+          # Check if 'badges' branch exists
+          if git ls-remote --exit-code --heads origin badges; then
+            git fetch origin badges
+            git checkout badges
+          else
+            echo "Creating orphan badges branch"
+            git checkout --orphan badges
+            git rm -rf .
+          fi
 
-              # Move badge into place
-              cp temp_badges/security.svg .
+          # Move badge into place
+          cp temp_badges/security.svg .
 
-              # Commit and Push
-              git add security.svg
+          # Commit and Push
+          git add security.svg
               
-              # Only commit if changed
-              if git diff --staged --quiet; then
-                echo "No changes to security badge."
-              else
-                git commit -m "🛡️ Update Security Badge: ${{ needs.analyze.result }}"
-                git push origin badges
-              fi
+          # Only commit if changed
+          if git diff --staged --quiet; then
+            echo "No changes to security badge."
+          else
+            git commit -m "🛡️ Update Security Badge: ${{ needs.analyze.result }}"
+            git push origin badges
+          fi
