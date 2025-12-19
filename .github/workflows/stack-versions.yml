@@ -142,6 +142,7 @@ jobs:
             echo "No changes to stack badges."
           else
             git commit -m "🤖 Update Stack Versions badges [skip ci]"
-            git push origin $TARGET_BRANCH
+            git push origin ${{ github.ref_name }}
             echo "Badges updated."
           fi
+

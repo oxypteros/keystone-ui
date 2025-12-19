@@ -151,6 +151,6 @@ jobs:
             echo "No changes to performance badge."
           else
             git commit -m "🤖 Update Performance Badge: ${{ steps.psi.outputs.score }} [skip ci]"
-            git push origin $TARGET_BRANCH
+            git push origin ${{ github.ref_name }}
             echo "Badge updated."
           fi
