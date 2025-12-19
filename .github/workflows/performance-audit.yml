@@ -25,7 +25,6 @@ env:
   # Configuration Variables
   DEFAULT_URL: "https://keystone-ui.oxypteros.com/"
   BADGE_FOLDER: ".github/badges"
-  BADGE_BRANCH: "badges"
 
 jobs:
   psi-audit:
@@ -80,7 +79,7 @@ jobs:
 
             CURRENT_SCORE=$(echo "$SCORE_RAW * 100" | bc | awk '{print int($1+0.5)}')
             CURRENT_SCORE=${CURRENT_SCORE:-0}
-            
+
             echo "📊 Run $i Score: $CURRENT_SCORE"
 
             if [ "$CURRENT_SCORE" -gt "$MAX_SCORE" ]; then
@@ -106,65 +105,52 @@ jobs:
           echo "score=$MAX_SCORE" >> $GITHUB_OUTPUT
 
       - name: Generate Performance Badge
+        id: badge_logic
         if: steps.check_secrets.outputs.has_key == 'true'
         env:
           SCORE: ${{ steps.psi.outputs.score }}
         run: |
-          mkdir -p ../temp_badges_gen
 
-          COLOR="bc2c00" # Red
+          BADGE_FILE="$BADGE_FOLDER/performance.svg"  
+          mkdir -p $BADGE_FOLDER
+
+          COLOR="BC2C00" # Red
           if (( $SCORE >= 90 )); then COLOR="266429"; fi # Green
           if (( $SCORE >= 50 && $SCORE < 90 )); then COLOR="BF5B00"; fi # Orange
 
-          echo "Generating Performance Badge: ($SCORE)"
+          if [ -f "$BADGE_FILE" ]; then
+            if grep -q ">$SCORE<" "$BADGE_FILE"; then
+              echo "✅ Score is still $SCORE. Badge is up to date."
+              echo "commit_required=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          fi
+
+          echo "🔄 Score changed to $SCORE. Generating..."
           
-          # Output to the external temp directory
           curl -s -G "https://img.shields.io/badge/Performance-$SCORE-$COLOR" \
             -d style=flat \
             -d labelColor=%23FEFEFE \
-            > "../temp_badges_gen/performance.svg"
+            > "$BADGE_FILE"
+
+          echo "commit_required=true" >> $GITHUB_OUTPUT
 
       - name: Deploy Badge
-        if: steps.check_secrets.outputs.has_key == 'true'
+        if: steps.check_secrets.outputs.has_key == 'true' && steps.badge_logic.outputs.commit_required == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # 🔍 Check if 'badges' branch exists on remote
-          if git ls-remote --exit-code --heads origin $BADGE_BRANCH; then
-
-            echo "✅ '$BADGE_BRANCH' branch detected. Switching..."
-            git fetch origin $BADGE_BRANCH
-            git checkout $BADGE_BRANCH
-            
-            # Copy from external temp dir
-            cp ../temp_badges_gen/performance.svg .
-            
-            git add performance.svg
-            TARGET_BRANCH="$BADGE_BRANCH"
-
-          else
-            echo "ℹ️ '$BADGE_BRANCH' branch NOT found. Falling back to folder: $BADGE_FOLDER..."
-            
-            # Ensure we are on the correct branch (crucial for fallbacks)
-            git checkout ${{ github.ref_name }}
-            # Pull latest changes to avoid 'non-fast-forward' errors if Main updated during audit
-            git pull origin ${{ github.ref_name }} --rebase
-            
-            mkdir -p $BADGE_FOLDER
-            
-            # Copy from external temp dir
-            cp ../temp_badges_gen/performance.svg $BADGE_FOLDER/
-            
-            git add $BADGE_FOLDER/performance.svg
-            TARGET_BRANCH="${{ github.ref_name }}"
-          fi
+          git checkout ${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }} --rebase
+          
+          git add $BADGE_FOLDER/performance.svg
 
            # 💾 COMMIT & PUSH
           if git diff --staged --quiet; then
-            echo "No changes to badge."
+            echo "No changes to performance badge."
           else
             git commit -m "🤖 Update Performance Badge: ${{ steps.psi.outputs.score }} [skip ci]"
             git push origin $TARGET_BRANCH
-            echo "🚀 Pushed to $TARGET_BRANCH"
+            echo "Badge updated."
           fi
