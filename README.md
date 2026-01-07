@@ -8,4 +8,4 @@
 ![Hugo](./.github/badges/hugo.svg) ![AlpineJs](./.github/badges/alpinedotjs.svg) ![Tailwind](./.github/badges/tailwindcss.svg)
 
 ## Testing
-[![Security](https://img.shields.io/github/actions/workflow/status/oxypteros/keystone-ui/codeql.yml?branch=main&label=Security&style=flat-square)](https://github.com/oxypteros/keystone-ui/actions/workflows/codeql.yml) [![Performance](./.github/badges/performance.svg)](https://pagespeed.web.dev/report?url=https://keystone-ui.oxypteros.com) [![Accessibility](./.github/badges/a11y.svg)](https://github.com/oxypteros/keystone-ui/actions/workflows/accessibility-audit.yml)
+[![Security](./.github/badges/security.svg)](https://github.com/oxypteros/keystone-ui/actions/workflows/security-audit.yml) [![Performance](./.github/badges/performance.svg)](https://pagespeed.web.dev/report?url=https://keystone-ui.oxypteros.com) [![Accessibility](./.github/badges/a11y.svg)](https://github.com/oxypteros/keystone-ui/actions/workflows/accessibility-audit.yml)
