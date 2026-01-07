@@ -18,9 +18,9 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: 'npm'
@@ -32,8 +32,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Setup Hugo
-        # NOTE: Action is pinned to commit hash to satisfy CodeQL (actions/unpinned-tag)
-        uses: peaceiris/actions-hugo@75d2e84710de30f6ff7268e08f310b60ef14033f #v3.0.0
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: ${{ steps.hugo-config.outputs.VERSION }}
           extended: true
