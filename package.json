@@ -16,18 +16,27 @@
   "main": "index.js",
   "scripts": {
     "format": "prettier --write .",
-    "ci:check": "prettier --check ."
+    "ci:check": "prettier --check .",
+    "dev": "hugo server",
+    "build": "hugo --minify",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:podman": "./scripts/podman-test.sh",
+    "setup": "npm install && npx playwright install --with-deps"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/cli": "^4.1.18",
+    "@types/node": "^25.0.3",
+    "playwright": "^1.57.0",
     "prettier": "^3.7.4",
     "prettier-plugin-go-template": "^0.0.15",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "prettier-plugin-toml": "^2.0.6",
     "tailwindcss": "^4.1.18"
   },
   "engines": {
     "node": ">=24.12.0",
-    "hugo": "0.152.2"
+    "hugo": "0.154.3"
   }
 }

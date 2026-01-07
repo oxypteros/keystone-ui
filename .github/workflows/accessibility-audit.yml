@@ -11,7 +11,7 @@ env:
   BADGE_FOLDER: ".github/badges"
 
 jobs:
-  test:
+  a11y-audit:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     permissions:
@@ -32,8 +32,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Setup Hugo
-        # NOTE: Action is pinned to commit hash to satisfy CodeQL (actions/unpinned-tag)
-        uses: peaceiris/actions-hugo@75d2e84710de30f6ff7268e08f310b60ef14033f #v3.0.0
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: ${{ steps.hugo-config.outputs.VERSION }}
           extended: true
@@ -117,3 +116,4 @@ jobs:
         run: |
           echo "❌ Playwright tests failed!"
           exit 1
+
