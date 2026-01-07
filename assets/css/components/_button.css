@@ -29,9 +29,9 @@
     @apply dark:border-input border;
   }
   .btn.variant-secondary {
-    @apply text-secondary-foreground; 
+    @apply text-secondary-foreground;
     @apply bg-secondary shadow-xs;
-    @apply hover:bg-secondary/50; 
+    @apply hover:bg-secondary/50;
   }
   .btn.variant-ghost {
     @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50;
