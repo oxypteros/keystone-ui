@@ -1,0 +1,148 @@
+name: Versions
+on:
+  push:
+    paths:
+      - 'package.json'
+  workflow_dispatch:
+env:
+  # Configuration Variables
+  BADGE_FOLDER: ".github/badges"
+  # Custom project badge values
+  PROJECT_LOGO: ""  # Base 64 SVG
+  PROJECT_LOGO_COLOR: ""
+  BG_COLOR: ""
+
+jobs:
+  update-badges:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate Versions Badges
+        run: |
+          mkdir -p $BADGE_FOLDER
+
+          generate_badge() {
+            NAME=$1
+            PACKAGE_JSON_KEY=$2
+            COLOR=$3
+            LOGO=$4
+            LOGO_COLOR=$5
+            LABEL_COLOR=$6
+            
+            RAW_VERSION=$(jq -r ".devDependencies[\"$PACKAGE_JSON_KEY\"] // .dependencies[\"$PACKAGE_JSON_KEY\"]" package.json)
+            if [ "$RAW_VERSION" == "null" ] || [ -z "$RAW_VERSION" ]; then return 0; fi
+            VERSION=$(echo "$RAW_VERSION" | sed 's/[\^~v]//g' | cut -d. -f1,2)
+            if [ "$VERSION" == "null" ] || [ -z "$VERSION" ]; then VERSION="latest"; fi
+
+            echo "Generating Dev. Stack Version Badges"
+            curl -s -G "https://img.shields.io/badge/$NAME-$VERSION-$COLOR" \
+              -d style=flat \
+              -d logo=$LOGO \
+              -d logoColor=$LOGO_COLOR \
+              -d labelColor=%23$LABEL_COLOR \
+              > "$BADGE_FOLDER/$LOGO.svg"
+
+            sleep 1
+          }
+
+          # BADGES to GENERATE from deps
+          generate_badge "AlpineJs/CSP" "@alpinejs/csp" "8BC0D0" "alpinedotjs" "8BC0D0" "FEFEFE"
+          generate_badge "Tailwind" "tailwindcss" "06B6D4" "tailwindcss" "06B6D4" "FEFEFE"
+
+          # BADGES to GENERATE from engines
+          HUGO_VERSION=$(jq -r '.engines.hugo' package.json)
+
+          if [ "$HUGO_VERSION" == "null" ] || [ -z "$HUGO_VERSION" ]; then
+             HUGO_VERSION="unknown"
+          fi
+
+          echo "Generating Hugo Version Badge"
+          curl -s -G "https://img.shields.io/badge/Hugo-$HUGO_VERSION-FF4088" \
+            -d style=flat \
+            -d logo=hugo \
+            -d logoColor=%23FF4088 \
+            -d labelColor=%23FEFEFE \
+            > "$BADGE_FOLDER/hugo.svg"
+
+          sleep 1 
+
+          # Project BADGE from version
+          PKG_NAME=$(jq -r '.name' package.json)
+          PKG_VERSION=$(jq -r '.version' package.json)
+          CURRENT_REPO="${{ github.repository }}" 
+          OFFICIAL_REPO="oxypteros/keystone-ui"
+
+          if [ "$PKG_VERSION" == "null" ] || [ -z "$PKG_VERSION" ]; then
+             PKG_VERSION="0.0.0"
+          fi
+          LABEL=$(echo "$PKG_NAME" | sed -r 's/(-|_)/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
+
+          KEYSTONE_LOGO="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0iIzQ0NDQ0NCI+CiAgPHBhdGggZD0iTTQuMzE0IDE2LjcxMkE1MTI3LjY3NSA1MTI3LjY3NSAwIDAgMSAxLjI1OCAyLjQxNmMuMDQ0LS4wNDUgMi43ODEtLjUwOCA0LjAzLS42ODJDOC45NzIgMS4yMiAxMi4xODIgMSAxNiAxYzMuODE4IDAgNy4wMjguMjIgMTAuNzEyLjczNCAxLjI0NS4xNzQgMy45ODYuNjM3IDQuMDMuNjgxLjAwNS4wMDUtMS4yMyA1Ljc4My0yLjc0NCAxMi44NGE2ODAyOS4wMSA2ODAyOS4wMSAwIDAgMC0zLjA2MiAxNC4yOGMtLjE3Ljc5Ni0uMzEyIDEuNDUxLS4zMTQgMS40NTQtLjAwMy4wMDQtLjI3NC0uMDQtLjYwNC0uMDk1YTUwLjQ1NiA1MC40NTYgMCAwIDAtNS4xNS0uNTljLTEuMTE5LS4wNzQtNC42MTctLjA3NC01LjczNiAwLTEuMzY0LjA5LTIuNTc4LjIxMi0zLjc0Ni4zNzUtLjU1NC4wNzctMS43MjYuMjYyLTEuOTMzLjMwNkw3LjM3OSAzMXoiLz4KPC9zdmc+"
+
+          KEYSTONE_FORK_LOGO="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9ImN1cnJlbnRDb2xvciIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjNDQ0IiBkPSJNMTYgMWMtMi40MTIgMC00LjU4Mi4wODktNi43ODEuMjgzbDIuNTM1IDIuNTM1YTIuNTM3IDIuNTM3IDAgMCAxIC43NTYtLjExNSAyLjUzNyAyLjUzNyAwIDAgMSAyLjUzNSAyLjUzNyAyLjUzNyAyLjUzNyAwIDAgMS0uMTE1Ljc1NmwzLjY5NSAzLjY5NWEyLjUzNyAyLjUzNyAwIDAgMSAuODQyLS4xNDIgMi41MzcgMi41MzcgMCAwIDEgMi41MzcgMi41MzUgMi41MzcgMi41MzcgMCAwIDEtMi41MzcgMi41MzcgMi41MzcgMi41MzcgMCAwIDEtMi41MzctMi41MzcgMi41MzcgMi41MzcgMCAwIDEgLjE5My0uOTdsLTMuNTA2LTMuNTA3djkuMDc5YTIuNTM3IDIuNTM3IDAgMCAxIDEuNDA4IDIuMjcxIDIuNTM3IDIuNTM3IDAgMCAxLTIuNTM3IDIuNTM3IDIuNTM3IDIuNTM3IDAgMCAxLTIuNTM3LTIuNTM3IDIuNTM3IDIuNTM3IDAgMCAxIDEuNTg4LTIuMzUyVjguNTgyQTIuNTM3IDIuNTM3IDAgMCAxIDkuOTczIDYuMjRhMi41MzcgMi41MzcgMCAwIDEgLjIyOC0xLjA1TDYuNTc2IDEuNTYzYy0uNDI0LjA1My0uODUzLjExLTEuMjg5LjE3LTEuMjQ5LjE3NC0zLjk4NS42MzctNC4wMy42ODJhNTEyNy43IDUxMjcuNyAwIDAgMCAzLjA1OCAxNC4yOTdMNy4zNzkgMzFsLjA3NC0uMDE2YTUxLjIxMSA1MS4yMTEgMCAwIDEgNS42OC0uNjhjMS4xMTktLjA3MyA0LjYxNS0uMDczIDUuNzM0IDBhNTAuNDU2IDUwLjQ1NiAwIDAgMSA1LjE1LjU5Yy4zMy4wNTYuNjAxLjA5OC42MDQuMDk0LjAwMi0uMDAzLjE0NS0uNjU3LjMxNS0xLjQ1M2E2ODAyOSA2ODAyOSAwIDAgMSAzLjA2Mi0xNC4yNzlDMjkuNTEyIDguMiAzMC43NDggMi40MiAzMC43NDIgMi40MTRjLS4wNDQtLjA0NC0yLjc4NC0uNTA2LTQuMDI5LS42OEMyMy4wMjkgMS4yMiAxOS44MTggMSAxNiAxeiIvPjwvc3ZnPg=="
+          
+          BG_COLOR="FEFEFE"
+          PROJECT_LOGO_COLOR="444444"
+
+          # User Custom Logo
+          if [ -n "${{ env.PROJECT_LOGO }}" ]; then
+            echo "Custom Project Logo detected."
+            LOGO_BASE64="${{ env.PROJECT_LOGO }}"
+
+            if [ -n "${{ env.BG_COLOR }}" ]; then BG_COLOR="${{ env.BG_COLOR }}"; fi
+            if [ -n "${{ env.PROJECT_LOGO_COLOR }}" ]; then LOGO_COLOR="${{ env.PROJECT_LOGO_COLOR }}"; fi
+          
+          # Official Keystone Repo
+          elif [[ "$CURRENT_REPO" == "$OFFICIAL_REPO" ]]; then
+             echo "Official Keystone Repo detected."
+             LABEL="Keystone"
+             LOGO_BASE64="$KEYSTONE_LOGO"
+          
+          # Forked Repo
+          else
+             echo "Keystone Fork detected."
+             LOGO_BASE64="$KEYSTONE_FORK_LOGO"
+          fi
+
+          LABEL=$(echo "$LABEL" | sed 's/ /%20/g')
+
+          echo "Generating Project Badge: $LABEL"
+          curl -s -G "https://img.shields.io/badge/$LABEL-$PKG_VERSION-$PROJECT_LOGO_COLOR" \
+            -d style=flat \
+            --data-urlencode "logo=$LOGO_BASE64" \
+            -d logoColor=$PROJECT_LOGO_COLOR \
+            -d labelColor=$BG_COLOR \
+            > "$BADGE_FOLDER/keystone.svg"
+
+          # Verify SVG integrity
+          if ! grep -q "^<svg" $BADGE_FOLDER/keystone.svg; then
+            echo "❌ Error: Downloaded file is not a valid SVG."
+            exit 1
+          fi
+
+      - name: Deploy Badges
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            
+          git checkout ${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }} --rebase
+            
+          mkdir -p $BADGE_FOLDER
+            
+          git add $BADGE_FOLDER/*.svg
+            
+
+          # 💾 COMMIT & PUSH
+          if git diff --staged --quiet; then
+            echo "No changes to stack badges."
+          else
+            git commit -m "🤖 Update Stack Versions badges [skip ci]"
+            git push origin ${{ github.ref_name }}
+            echo "Badges updated."
+          fi
+
