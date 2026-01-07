@@ -142,15 +142,15 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git checkout ${{ github.ref_name }}
-          git pull origin ${{ github.ref_name }} --rebase
-          
           git add $BADGE_FOLDER/performance.svg
-
-           # 💾 COMMIT & PUSH
+          
           if git diff --staged --quiet; then
-            echo "No changes to performance badge."
-          else
-            git commit -m "🤖 Update Performance Badge: ${{ steps.psi.outputs.score }} [skip ci]"
-            git push origin ${{ github.ref_name }}
-            echo "Badge updated."
+            echo "No changes detected by git. Exiting."
+            exit 0
           fi
+          
+          # 💾 COMMIT & PUSH
+          git commit -m "🤖 Update Performance Badge: ${{ steps.psi.outputs.score }} [skip ci]"
+          git pull origin ${{ github.ref_name }} --rebase
+          git push origin ${{ github.ref_name }}
+          echo "Badge updated."
