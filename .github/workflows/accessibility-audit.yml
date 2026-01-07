@@ -1,0 +1,118 @@
+name: Accessibility Check (A11y)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  BADGE_FOLDER: ".github/badges"
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Read Hugo Version
+        id: hugo-config
+        run: |
+          VERSION=$(jq -r '.engines.hugo' package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ steps.hugo-config.outputs.VERSION }}
+          extended: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        id: playwright
+        # MUST continue on error to allow the badge logiic to run (if on main),
+        # BUT fail the job at the very end.
+        run: npx playwright test
+        continue-on-error: true
+
+      # BADGE GENERATION 
+      - name: Prepare A11y Badge
+        id: badge_logic
+        # Only run if we are on Main or Manual Trigger
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        run: |
+          # 1. Determine Status based on the previous step
+          if [ "${{ steps.playwright.outcome }}" == "success" ]; then
+            STATUS="PASS"
+            COLOR="266429"
+          else
+            STATUS="FAIL"
+            COLOR="BC2C00"
+          fi
+
+          REPO_BADGE="$BADGE_FOLDER/a11y.svg"
+          TEMP_BADGE="temp_a11y.svg"
+
+          # 2. Check if badge actually needs updating
+          if [ -f "$REPO_BADGE" ]; then
+             if grep -q "$STATUS" "$REPO_BADGE"; then
+                echo "✅ Status is still $STATUS. Badge is up to date."
+                echo "commit_required=false" >> $GITHUB_OUTPUT
+                exit 0
+             fi
+          fi
+
+          # 3. Generate Temp Badge
+          curl -s -G "https://img.shields.io/badge/A11y-$STATUS-$COLOR" \
+            -d style=flat \
+            -d logo=accessibility \
+            -d logoColor=%23FEFEFE \
+            -d labelColor=%23FEFEFE \
+            > "$TEMP_BADGE"
+          
+          echo "commit_required=true" >> $GITHUB_OUTPUT
+
+      - name: Deploy Badge
+        # Only run if commit is required AND we are on main
+        if: steps.badge_logic.outputs.commit_required == 'true' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git checkout ${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }} --rebase
+          
+          mkdir -p $BADGE_FOLDER
+          mv temp_a11y.svg $BADGE_FOLDER/a11y.svg
+          
+          # 💾 COMMIT & PUSH
+          git add $BADGE_FOLDER/a11y.svg
+          
+          if git diff --staged --quiet; then
+            echo "No changes detected."
+          else
+            git commit -m "🤖 Update A11y Badge: ${{ steps.playwright.outcome }} [skip ci]"
+            git push origin ${{ github.ref_name }}
+            echo "Badge updated on Main."
+          fi
+
+      - name: Check Final Status
+        if: steps.playwright.outcome != 'success'
+        run: |
+          echo "❌ Playwright tests failed!"
+          exit 1
