@@ -38,8 +38,10 @@ jobs:
 
       - name: Check for API Key (Fork Guard)
         id: check_secrets
+        env:
+          MY_SECRET_KEY: ${{ secrets.PAGESPEED_API_KEY }}
         run: |
-          if [ -z "${{ secrets.PAGESPEED_API_KEY }}" ]; then
+          if [ -z "$MY_SECRET_KEY" ]; then
             echo "⚠️  No PAGESPEED_API_KEY found."
             echo "If you are a user/fork, this workflow is skipped to prevent errors."
             echo "has_key=false" >> $GITHUB_OUTPUT
@@ -52,9 +54,11 @@ jobs:
       - name: Fetch Score from Google API
         if: steps.check_secrets.outputs.has_key == 'true'
         id: psi
+        env:
+          PSI_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
         run: |
           RAW_URL="${{ inputs.target_url || env.DEFAULT_URL }}"
-          API_KEY="${{ secrets.PAGESPEED_API_KEY }}"
+          API_KEY="$PSI_API_KEY"
           URL=$(printf '%s' "$RAW_URL" | jq -sRr @uri)
           MAX_SCORE=0
 
