@@ -57,7 +57,7 @@ jobs:
         # Only run if we are on Main or Manual Trigger
         if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         run: |
-          # 1. Determine Status based on the previous step
+          # Determine Status based on the previous step
           if [ "${{ steps.playwright.outcome }}" == "success" ]; then
             STATUS="PASS"
             COLOR="266429"
@@ -69,7 +69,7 @@ jobs:
           REPO_BADGE="$BADGE_FOLDER/a11y.svg"
           TEMP_BADGE="temp_a11y.svg"
 
-          # 2. Check if badge actually needs updating
+          # Check if badge actually needs updating
           if [ -f "$REPO_BADGE" ]; then
              if grep -q "$STATUS" "$REPO_BADGE"; then
                 echo "✅ Status is still $STATUS. Badge is up to date."
@@ -78,7 +78,7 @@ jobs:
              fi
           fi
 
-          # 3. Generate Temp Badge
+          # Generate Temp Badge
           curl -s -G "https://img.shields.io/badge/A11y-$STATUS-$COLOR" \
             -d style=flat \
             -d logo=accessibility \
