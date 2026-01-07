@@ -11,7 +11,7 @@ env:
   BADGE_FOLDER: ".github/badges"
 
 jobs:
-  test:
+  a11y-audit:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     permissions:
