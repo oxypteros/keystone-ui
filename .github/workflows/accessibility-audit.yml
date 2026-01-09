@@ -2,13 +2,13 @@ name: Accessibility Check (A11y)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
   workflow_dispatch:
 
 env:
-  BADGE_FOLDER: ".github/badges"
+  BADGE_FOLDER: '.github/badges'
 
 jobs:
   a11y-audit:
@@ -51,7 +51,7 @@ jobs:
         run: npx playwright test
         continue-on-error: true
 
-      # BADGE GENERATION 
+      # BADGE GENERATION
       - name: Prepare A11y Badge
         id: badge_logic
         # Only run if we are on Main or Manual Trigger
@@ -85,7 +85,7 @@ jobs:
             -d logoColor=%23FEFEFE \
             -d labelColor=%23FEFEFE \
             > "$TEMP_BADGE"
-          
+
           echo "commit_required=true" >> $GITHUB_OUTPUT
 
       - name: Deploy Badge
@@ -94,16 +94,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
+
           git checkout ${{ github.ref_name }}
           git pull origin ${{ github.ref_name }} --rebase
-          
+
           mkdir -p $BADGE_FOLDER
           mv temp_a11y.svg $BADGE_FOLDER/a11y.svg
-          
+
           # 💾 COMMIT & PUSH
           git add $BADGE_FOLDER/a11y.svg
-          
+
           if git diff --staged --quiet; then
             echo "No changes detected."
           else
@@ -117,4 +117,3 @@ jobs:
         run: |
           echo "❌ Playwright tests failed!"
           exit 1
-

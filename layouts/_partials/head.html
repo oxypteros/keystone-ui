@@ -10,6 +10,6 @@
 </title>
 
 {{- with (templates.Defer (dict "key" "global")) }}
-  {{- partial "head/css.html" . }}
+  {{- partial "ui/head/css.html" . }}
 {{- end }}
-{{ partialCached "head/js.html" . }}
+{{- partial "ui/head/js.html" . }}

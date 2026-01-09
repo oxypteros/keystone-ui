@@ -11,8 +11,8 @@ name: Performance Check
 
 on:
   schedule:
-  - cron: '47 17 * * *'
-  
+    - cron: '47 17 * * *'
+
   # Manual trigger with custom inputs
   workflow_dispatch:
     inputs:
@@ -23,8 +23,8 @@ on:
 
 env:
   # Configuration Variables
-  DEFAULT_URL: "https://keystone-ui.oxypteros.com/"
-  BADGE_FOLDER: ".github/badges"
+  DEFAULT_URL: 'https://keystone-ui.oxypteros.com/'
+  BADGE_FOLDER: '.github/badges'
 
 jobs:
   psi-audit:
@@ -131,7 +131,7 @@ jobs:
           fi
 
           echo "🔄 Score changed to $SCORE. Generating..."
-          
+
           curl -s -G "https://img.shields.io/badge/Performance-$SCORE-$COLOR" \
             -d style=flat \
             -d labelColor=%23FEFEFE \
@@ -147,12 +147,12 @@ jobs:
 
           git checkout ${{ github.ref_name }}
           git add $BADGE_FOLDER/performance.svg
-          
+
           if git diff --staged --quiet; then
             echo "No changes detected by git. Exiting."
             exit 0
           fi
-          
+
           # 💾 COMMIT & PUSH
           git commit -m "🤖 Update Performance Badge: ${{ steps.psi.outputs.score }} [skip ci]"
           git pull origin ${{ github.ref_name }} --rebase

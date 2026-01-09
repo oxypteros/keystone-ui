@@ -1,0 +1,11 @@
+<span
+  :id="$id('ks-tooltip')"
+  x-show="visible"
+  x-anchor.top.offset.8="$el.parentNode"
+  x-transition.opacity
+  x-cloak
+  role="tooltip"
+  class="tooltip"
+>
+  {{- .label -}}
+</span>

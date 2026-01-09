@@ -2,12 +2,12 @@
 
 ## Supported Versions
 
-Keystone UI is currently under active development. We generally support the latest minor release. 
+Keystone UI is currently under active development. We generally support the latest minor release.
 
-| Version | Supported          | Notes |
-| ------- | ------------------ | ----- |
+| Version | Supported          | Notes                      |
+| ------- | ------------------ | -------------------------- |
 | 0.1.x   | :white_check_mark: | Current development branch |
-| < 0.1.0 | :x:                | No longer supported |
+| < 0.1.0 | :x:                | No longer supported        |
 
 ## Reporting a Vulnerability
 
@@ -23,7 +23,7 @@ We prefer you use GitHub's **Private Vulnerability Reporting**:
 2. Click on **"Report a vulnerability"**.
 3. Provide a detailed description of the issue, including a Minimal Reproducible Example (reproduction code or a CodePen/StackBlitz link).
 
-*If for some reason you cannot use GitHub Reporting, you may email us at hello@oxypteros.com.*
+_If for some reason you cannot use GitHub Reporting, you may email us at hello@oxypteros.com._
 
 ### What to Expect
 
@@ -35,14 +35,16 @@ We prefer you use GitHub's **Private Vulnerability Reporting**:
 ## Scope
 
 ### In Scope
-*   **Cross-Site Scripting (XSS):** If a component renders user content in a way that allows script execution.
-*   **CSP Violations:** Since Keystone UI is designed for `alpine/csp`, any component that fails to work under strict CSP settings is considered a security/functional defect.
-*   **Supply Chain:** Vulnerabilities in our build dependencies that could inject malicious code into the distribution files.
+
+- **Cross-Site Scripting (XSS):** If a component renders user content in a way that allows script execution.
+- **CSP Violations:** Since Keystone UI is designed for `alpine/csp`, any component that fails to work under strict CSP settings is considered a security/functional defect.
+- **Supply Chain:** Vulnerabilities in our build dependencies that could inject malicious code into the distribution files.
 
 ### Out of Scope
-*   UX/UI bugs that do not pose a security risk (please open a standard Issue for these).
-*   Vulnerabilities in Hugo, Tailwind CSS, or Alpine.js core (please report those to the respective projects).
-*   Any library, plugin, or dependency you install that is not part of the original Keystone UI `package.json`.
-*   Vulnerabilities introduced by changes you make to the components after copying them into your project.
-*   Security issues caused by how you use the components in your application.
-*   Vulnerabilities related to your hosting provider, server configuration, or Hugo version mismatches outside our supported range.
+
+- UX/UI bugs that do not pose a security risk (please open a standard Issue for these).
+- Vulnerabilities in Hugo, Tailwind CSS, or Alpine.js core (please report those to the respective projects).
+- Any library, plugin, or dependency you install that is not part of the original Keystone UI `package.json`.
+- Vulnerabilities introduced by changes you make to the components after copying them into your project.
+- Security issues caused by how you use the components in your application.
+- Vulnerabilities related to your hosting provider, server configuration, or Hugo version mismatches outside our supported range.
