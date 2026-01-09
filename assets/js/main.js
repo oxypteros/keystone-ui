@@ -12,12 +12,12 @@ Alpine.plugin(collapse);
 // (Add stores here)
 
 // IMPORT MODULES
-// (Add modules here)
-import tooltipModule from './modules/tooltip.js';
+// (Uncomment to enable modules)
+//import tooltipModule from './modules/tooltip.js';
 
 // INITIALIZE MODULES
-// (Init modules here)
-tooltipModule(Alpine);
+// (Uncomment to Init modules)
+//tooltipModule(Alpine);
 
 // START
 window.Alpine = Alpine;

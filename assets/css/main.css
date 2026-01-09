@@ -2,12 +2,15 @@
 @source 'hugo_stats.json';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Keystone Theme Variables */
+/* Themes Variables */
 @import './base/_neutral.css';
 
 /* Keystone Components */
 @import './components/_icon.css';
 @import './components/_button.css';
+
+/** Uncomment to enable the components you need */
+/* @import './components/_tooltip.css';*/
 
 @theme {
   --radius: var(--radius);
@@ -54,4 +57,9 @@
   [role='button']:not(:disabled) {
     @apply cursor-pointer;
   }
+}
+
+/* Alpine Styles */
+[x-cloak] {
+  display: none !important;
 }
