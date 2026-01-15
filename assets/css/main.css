@@ -2,7 +2,7 @@
 @source 'hugo_stats.json';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Themes Variables */
+/* Theme Variables */
 @import './base/_neutral.css';
 
 /* Keystone Components */
@@ -11,6 +11,7 @@
 
 /** Uncomment to enable the components you need */
 /* @import './components/_tooltip.css';*/
+@import './components/_typography.css';
 
 @theme {
   --radius: var(--radius);
