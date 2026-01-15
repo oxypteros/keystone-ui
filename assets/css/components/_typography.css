@@ -1,0 +1,67 @@
+@layer components {
+  code {
+    @apply subpixel-antialiased;
+  }
+  .content {
+    @apply max-w-[80ch] leading-normal antialiased;
+    /* Standard p followed by p: */
+    /* 1.5 (line-height) * 1.5 (WCAG requirement) = 2.25em */
+    @apply [&_p+p]:mb-[2.25em];
+
+    /* General p followed by anything else */
+    @apply [&_p:has(+_:not(p))]:mb-[1.5em];
+
+    p:has(+ h2) {
+      @apply mb-[3em];
+    }
+    p:has(+ h3) {
+      @apply mb-[2em];
+    }
+    p:has(+ ul),
+    p:has(+ ol) {
+      @apply mb-[0.75em];
+    }
+
+    /** Headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply mb-[0.6em];
+      @apply scroll-m-20 leading-relaxed tracking-tight text-balance;
+    }
+    h1 {
+      @apply text-[2.25em] font-bold;
+    }
+    h2 {
+      @apply text-[1.875em] font-semibold;
+    }
+    h3 {
+      @apply text-[1.5em] font-medium;
+    }
+    h4 {
+      @apply text-[1.25em];
+    }
+    h5 {
+      @apply text-[1.125em] tracking-wide uppercase;
+    }
+    h6 {
+      @apply text-[1em] tracking-wide uppercase;
+    }
+
+    /** Multimedia **/
+    img,
+    picture,
+    video,
+    figure {
+      @apply mt-[2em] mb-[2em];
+    }
+
+    picture > img,
+    figure > * {
+      @apply mt-0 mb-0;
+    }
+  }
+}
