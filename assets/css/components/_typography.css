@@ -1,15 +1,24 @@
 @layer components {
   code {
-    @apply subpixel-antialiased;
+    @apply font-mono subpixel-antialiased;
   }
-  .content {
-    @apply max-w-[80ch] leading-normal antialiased;
+  .ks-prose {
+    @apply max-w-[80ch] px-2;
+    @apply leading-normal antialiased;
     /* Standard p followed by p: */
     /* 1.5 (line-height) * 1.5 (WCAG requirement) = 2.25em */
     @apply [&_p+p]:mb-[2.25em];
 
     /* General p followed by anything else */
     @apply [&_p:has(+_:not(p))]:mb-[1.5em];
+
+    & > :first-child {
+      @apply mt-0;
+    }
+
+    & > :last-child {
+      @apply mb-0;
+    }
 
     p:has(+ h2) {
       @apply mb-[3em];
@@ -22,7 +31,7 @@
       @apply mb-[0.75em];
     }
 
-    /** Headings */
+    /** Headings **/
     h1,
     h2,
     h3,
@@ -62,6 +71,97 @@
     picture > img,
     figure > * {
       @apply mt-0 mb-0;
+    }
+
+    /** Links **/
+    a:not(a.btn) {
+      @apply font-medium underline decoration-2 underline-offset-2;
+      @apply hover:decoration-3;
+      @apply visited:font-normal;
+      @apply active:no-underline;
+      @apply transition-all duration-300;
+    }
+    /*** Styles for `_markup/render-link.html` ***/
+    .ks-external-link {
+      @apply inline-flex items-center;
+    }
+
+    /** Lists **/
+    ul,
+    ol {
+      @apply mb-[1.5em] pl-[1.5em];
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    li {
+      @apply pl-[0.25em];
+      /*** Nested lists ***/
+      & > :is(ul, ol) {
+        @apply mt-0 mb-[0.5em] pl-[1em];
+      }
+      & > :is(ul) {
+        @apply list-[circle];
+      }
+      & > :is(ol) {
+        @apply list-[lower-latin];
+      }
+    }
+
+    /** Blockquote **/
+    blockquote {
+      @apply my-[2em] py-1.5 pl-6;
+      @apply bg-muted/50 rounded-sm;
+      @apply text-muted-foreground italic;
+      @apply border-primary border-l-4;
+
+      & > p {
+        @apply mb-0;
+      }
+    }
+
+    /** Table **/
+    table {
+      @apply my-[2em] w-full overflow-y-auto;
+      @apply text-left text-sm;
+      @apply border-collapse border;
+    }
+
+    thead {
+      @apply bg-muted text-muted-foreground;
+    }
+
+    th {
+      @apply border-border border-b px-4 py-2 font-medium;
+    }
+
+    td {
+      @apply border-border border-b px-4 py-2;
+    }
+
+    tr:hover {
+      @apply bg-muted/50;
+    }
+
+    /** Inline Code **/
+    :not(pre) > code {
+      @apply bg-muted relative rounded-sm px-[0.3rem] py-[0.2rem];
+      @apply text-muted-foreground text-sm font-medium;
+    }
+
+    pre {
+      @apply bg-muted text-muted-foreground mb-[2em] overflow-x-auto rounded-md border p-4;
+    }
+
+    /** Misc Inline **/
+    hr {
+      @apply my-[3em] border;
     }
   }
 }
