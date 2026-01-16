@@ -10,8 +10,8 @@
 @import './components/_button.css';
 
 /** Uncomment to enable the components you need */
-/* @import './components/_tooltip.css';*/
-@import './components/_typography.css';
+/* @import './components/_tooltip.css'; */
+/* @import './components/_typography.css'; */
 
 @theme {
   --radius: var(--radius);
