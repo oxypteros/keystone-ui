@@ -4,8 +4,14 @@
   x-anchor.top.offset.8="$el.parentNode"
   x-transition.opacity
   x-cloak
+  @mouseenter="open()"
+  @mouseleave="scheduleClose()"
+  @click.prevent.stop=""
+  @mousedown.stop=""
+  @mouseup.stop=""
   role="tooltip"
   class="tooltip"
 >
-  {{- .label -}}
+  {{ .label }}
 </span>
+

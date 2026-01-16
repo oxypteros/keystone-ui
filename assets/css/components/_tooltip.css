@@ -1,9 +1,9 @@
 @layer components {
   .tooltip {
     @apply bg-popover text-foreground;
-    @apply text-xs;
+    @apply font-sans text-xs;
     @apply px-2 py-1;
     @apply rounded-md border;
-    @apply pointer-events-none z-90 shadow-md;
+    @apply pointer-events-auto z-90 cursor-text shadow-md select-text;
   }
 }
