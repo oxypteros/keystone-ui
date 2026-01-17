@@ -1,37 +1,34 @@
 @layer components {
-  code {
-    @apply font-mono subpixel-antialiased;
-  }
   .ks-prose {
-    @apply max-w-[80ch] px-2;
+    /* Container */
+    @apply w-full max-w-[80ch] px-2;
     @apply leading-normal antialiased;
-    /* Standard p followed by p: */
-    /* 1.5 (line-height) * 1.5 (WCAG requirement) = 2.25em */
-    @apply [&_p+p]:mb-[2.25em];
 
-    /* General p followed by anything else */
-    @apply [&_p:has(+_:not(p))]:mb-[1.5em];
-
+    /* Reset to prevent container gaps */
     & > :first-child {
       @apply mt-0;
     }
-
     & > :last-child {
       @apply mb-0;
     }
 
+    /* Vertical rythm defined by <p>*/
+    p {
+      /* 1.5 (line-height) * 1.5 (WCAG requirement) = 2.25em */
+      @apply mb-[2.25em];
+      @apply [&_:has(+_:not(p))]:mb-[1.5em];
+    }
     p:has(+ h2) {
       @apply mb-[3em];
     }
     p:has(+ h3) {
       @apply mb-[2em];
     }
-    p:has(+ ul),
-    p:has(+ ol) {
+    p:has(+ :is(ul, ol, pre)) {
       @apply mb-[0.75em];
     }
 
-    /** Headings **/
+    /* Headings */
     h1,
     h2,
     h3,
@@ -39,7 +36,8 @@
     h5,
     h6 {
       @apply mb-[0.6em];
-      @apply scroll-m-20 leading-relaxed tracking-tight text-balance;
+      @apply scroll-m-20;
+      @apply leading-relaxed tracking-tight text-balance;
     }
     h1 {
       @apply text-[2.25em] font-bold;
@@ -60,20 +58,16 @@
       @apply text-[1em] tracking-wide uppercase;
     }
 
-    /** Multimedia **/
-    img,
-    picture,
-    video,
-    figure {
+    /* Multimedia */
+    :is(img, picture, video, figure) {
       @apply mt-[2em] mb-[2em];
     }
-
-    picture > img,
-    figure > * {
-      @apply mt-0 mb-0;
+    /** Reset margins for nested media **/
+    :is(picture, figure) > img {
+      @apply my-0;
     }
 
-    /** Links **/
+    /* Links (button component exclusion) */
     a:not(a.btn) {
       @apply font-medium underline decoration-2 underline-offset-2;
       @apply hover:decoration-3;
@@ -81,15 +75,16 @@
       @apply active:no-underline;
       @apply transition-all duration-300;
     }
-    /*** Styles for `_markup/render-link.html` ***/
+    /** Styles for `_markup/render-link.html` **/
     .ks-external-link {
       @apply inline-flex items-center;
     }
 
-    /** Lists **/
+    /* Lists */
+    /** Deep indent for readability **/
     ul,
     ol {
-      @apply mb-[1.5em] pl-[1.5em];
+      @apply mb-[1.5em] pl-[2.25em];
     }
 
     ul {
@@ -102,7 +97,7 @@
 
     li {
       @apply pl-[0.25em];
-      /*** Nested lists ***/
+      /** Nested lists **/
       & > :is(ul, ol) {
         @apply mt-0 mb-[0.5em] pl-[1em];
       }
@@ -110,23 +105,23 @@
         @apply list-[circle];
       }
       & > :is(ol) {
-        @apply list-[lower-latin];
+        @apply list-[lower-roman];
       }
     }
 
-    /** Blockquote **/
+    /* Blockquotes */
     blockquote {
       @apply my-[2em] py-1.5 pl-6;
       @apply bg-muted/50 rounded-sm;
       @apply text-muted-foreground italic;
-      @apply border-primary border-l-4;
+      @apply border-primary border-x-4;
 
       & > p {
         @apply mb-0;
       }
     }
 
-    /** Table **/
+    /* Tables */
     table {
       @apply my-[2em] w-full overflow-y-auto;
       @apply text-left text-sm;
@@ -138,30 +133,50 @@
     }
 
     th {
-      @apply border-border border-b px-4 py-2 font-medium;
+      @apply border-b px-4 py-2 font-medium;
     }
 
     td {
-      @apply border-border border-b px-4 py-2;
+      @apply border-b px-4 py-2;
+    }
+
+    tr {
+      @apply last:border-b;
     }
 
     tr:hover {
       @apply bg-muted/50;
     }
 
-    /** Inline Code **/
+    /* Code */
+    /** Global reset for code for crisp rendering **/
+    code {
+      @apply font-mono subpixel-antialiased;
+    }
+    /** Inline code **/
     :not(pre) > code {
-      @apply bg-muted relative rounded-sm px-[0.3rem] py-[0.2rem];
-      @apply text-muted-foreground text-sm font-medium;
+      @apply relative;
+      @apply px-[0.3rem] py-[0.2rem];
+      @apply bg-muted text-muted-foreground text-sm font-medium;
+      @apply rounded-sm;
     }
 
+    /** Block code **/
     pre {
-      @apply bg-muted text-muted-foreground mb-[2em] overflow-x-auto rounded-md border p-4;
+      @apply mb-[1.5em];
+      @apply bg-muted text-muted-foreground text-sm;
+      @apply rounded-md border;
+      @apply overflow-x-hidden;
+    }
+    pre code {
+      @apply block;
+      @apply px-4 py-2;
+      @apply overflow-x-auto;
     }
 
     /** Misc Inline **/
     hr {
-      @apply my-[3em] border;
+      @apply my-[2.25em] border;
     }
   }
 }
