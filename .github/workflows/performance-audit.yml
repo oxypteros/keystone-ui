@@ -11,7 +11,7 @@ name: Performance Check
 
 on:
   schedule:
-    - cron: '47 17 * * *'
+    - cron: '47 17 * * 2'
 
   # Manual trigger with custom inputs
   workflow_dispatch:
