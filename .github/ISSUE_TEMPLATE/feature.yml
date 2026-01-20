@@ -1,0 +1,25 @@
+name: 🚀 Feature Proposal
+description: Suggest a new component or architectural improvement.
+title: "feat: "
+labels: ["feat: component", "triage"]
+body:
+  - type: textarea
+    id: concept
+    attributes:
+      label: Concept
+      description: What are we building and why?
+      placeholder: I need an Accordion to hide complex content...
+    validations:
+      required: true
+  - type: textarea
+    id: specs
+    attributes:
+      label: Technical Specs (The Blueprint)
+      description: Implementation details (Alpine logic, ARIA roles).
+      value: |
+        - [ ] WCAG Compliance:
+        - [ ] Hugo: 
+        - [ ] Alpine: 
+        - [ ] Tailwind: 
+    validations:
+      required: true

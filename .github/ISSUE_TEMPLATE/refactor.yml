@@ -1,0 +1,48 @@
+name: 🛠️ Refactor Proposal
+description: Propose improvements to existing logic, architecture, or CSS (No new features).
+title: "refactor: "
+labels: ["refactor", "triage"]
+body:
+  - type: input
+    id: target
+    attributes:
+      label: Target Component / Module
+      description: Which file or component is under renovation? (e.g. Tooltip, _typography.css)
+      placeholder: assets/js/modules/tooltip.js
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnosis
+    attributes:
+      label: Current Limitations (The "Why")
+      description: Why does the current implementation need changing? (Complexity, Accessibility, Performance, CSP issues?)
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution (The Blueprint)
+      description: Describe the structural changes.
+  
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact Assessment
+      options:
+        - "Internal logic only (Safe)"
+        - "Performance optimization"
+        - "Accessibility"
+        - "API Change (Breaking Change)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety Checks
+      options:
+        - label: This change maintains WCAG Compliance
+        - label: This change respects the CSP (No inline scripts)
+        - label: This change improve performance.
