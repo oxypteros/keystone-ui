@@ -19,11 +19,11 @@ on:
       target_url:
         description: 'URL to Audit'
         required: true
-        default: 'https://keystone-ui.oxypteros.com/'
+        default: 'https://keystone.oxypteros.com/'
 
 env:
   # Configuration Variables
-  DEFAULT_URL: 'https://keystone-ui.oxypteros.com/'
+  DEFAULT_URL: 'https://keystone.oxypteros.com/'
   BADGE_FOLDER: '.github/badges'
 
 jobs:
