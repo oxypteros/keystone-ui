@@ -16,7 +16,7 @@
     p {
       /* 1.5 (line-height) * 1.5 (WCAG requirement) = 2.25em */
       @apply mb-[2.25em];
-      @apply [&_:has(+_:not(p))]:mb-[1.5em];
+      @apply [&:has(+_:not(p))]:mb-[1.5em];
     }
     p:has(+ h2) {
       @apply mb-[3em];
