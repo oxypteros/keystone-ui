@@ -1,0 +1,62 @@
+{{- /* Docs: https://keystone.oxypteros/docs/components/tabs/ */}}
+
+{{- $items := .items -}}
+{{- if not $items }}
+  {{- errorf "Keystone UI: ui/tabs requires 'items'." }}
+{{- end }}
+
+{{- $variant := .variant | default "pill" -}}
+
+{{- $trackStyle := "" }}
+{{- if eq $variant "line" }}
+  {{- $trackStyle = "ks-tabs-track" }}
+{{- else }}
+  {{- $trackStyle = "ks-tabs-track-pill" }}
+{{- end }}
+
+{{- $default := index $items 0 -}}
+{{- /* Protocol: Strict Kebab Case */}}
+{{- $safeDefault := $default | lower | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-+|-$" "" -}}
+
+{{- $label:= .label -}}
+
+<div x-data="ksTabs({ default: '{{ $safeDefault }}' })" x-id="['ks-tab', 'ks-panel']" class="ks-tabs-wrapper">
+  <div class="{{ $trackStyle }}">
+    <div
+      class="ks-tabs-tablist"
+      role="tablist"
+      {{- with $label }}
+        aria-label="{{ . }}"
+      {{- end }}
+    >
+      {{- range $items }}
+        {{- /* Protocol: Strict Kebab Case */}}
+        {{- $safeID := . | lower | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-+|-$" "" -}}
+        {{- $variantStyle := "" }}
+        {{- if eq $variant "line" }}
+          {{- $variantStyle = "ks-tabs-line" -}}
+        {{- else }}
+          {{- $variantStyle = "ks-tabs-pill" -}}
+        {{- end }}
+        <button
+          type="button"
+          role="tab"
+          data-tab="{{ $safeID }}"
+          x-bind="trigger('{{ $safeID }}', '{{ $variant }}')"
+          class="ks-tabs-trigger {{ $variantStyle }}"
+        >
+          {{- . -}}
+        </button>
+      {{- end }}
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="ks-tabs-content-wrapper">
+    {{- if .content }}
+      {{- .content | safeHTML }}
+    {{- else }}
+      {{- inner . }}
+    {{ end }}
+  </div>
+</div>
