@@ -26,7 +26,7 @@ build:
 
 module:
   hugoVersion:
-    min: '0.152.2'
+    min: '0.154.0'
   mounts:
     - source: 'assets'
       target: 'assets'
