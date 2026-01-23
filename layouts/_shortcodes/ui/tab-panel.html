@@ -1,0 +1,18 @@
+{{- /* Docs: https://keystone.oxypteros/docs/components/tabs/ */}}
+
+{{- $item:= .Get 0 -}}
+{{- /* Protocol: Strict Kebab Case */}}
+{{- $safeName := $item | lower | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-+|-$" "" -}}
+
+
+<div
+  x-show="current === '{{ $safeName }}'"
+  x-cloak
+  role="tabpanel"
+  :id="$id('ks-panel', '{{ $safeName }}')"
+  :aria-labelledby="$id('ks-tab', '{{ $safeName }}')"
+  tabindex="0"
+  class="ks-tabs-content-shortcode"
+>
+  {{- .Inner | markdownify -}}
+</div>
