@@ -1,0 +1,27 @@
+{{- /* Docs: https://keystone.oxypteros/docs/components/tabs/ */}}
+
+{{- $item := .item -}}
+
+{{- if not $item }}
+  {{- $item = .label }}
+{{- end }}
+
+{{- /* Protocol: Strict Kebab Case */}}
+{{- $safeID := $item | lower | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-+|-$" "" -}}
+
+
+<div
+  x-show="current === '{{ $safeID }}'"
+  x-cloak
+  role="tabpanel"
+  :id="$id('ks-panel', '{{ $safeID }}')"
+  :aria-labelledby="$id('ks-tab', '{{ $safeID }}')"
+  tabindex="0"
+  class="ks-tabs-content"
+>
+  {{- if .content }}
+    {{- .content }}
+  {{- else }}
+    {{- inner . }}
+  {{- end }}
+</div>
