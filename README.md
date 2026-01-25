@@ -16,9 +16,7 @@
 Keystone is **NOT** a theme.  
 It is a construction kit of high-quality UI components for Hugo developers.
 
-Inspired by the _copy/paste_ philosophy of [shadcn/ui](https://ui.shadcn.com/), Keystone gives you complete ownership and transparency of the code. 
-
-> We provide the architectural foundation. You build the rest. 
+Inspired by the _copy/paste_ philosophy of [shadcn/ui](https://ui.shadcn.com/), Keystone gives you complete ownership and transparency of the code. We provide the architectural foundation. You build the rest. 
 
 Each component is: 
 - Fully functional out of the box
@@ -29,7 +27,7 @@ Each component is:
 We build everything on three structural pillars:
 
 ### Accessibility 
-Everyone should be able to use your site. Each component targets **WCAG 2.2 AA** compliance by default.
+Each component targets **WCAG 2.2 AA** compliance by default.
 - Requirements (WCAG/ARIA) are defined at the **blueprint level**.
 - Components are continuously tested using **automated tools** and **manual audits**.
 ### Security 
@@ -38,7 +36,7 @@ All components are designed to work under a **strict Content Security Policy (CS
 - Development enforces a strict CSP baseline: `default-src 'none';`, `script-src 'self';`, `style-src 'self';`.
 
 ### Performance 
-Engineering for speed. Zero bloat, no hydration delays, and no layout shifts.
+Zero bloat, no hydration delays, and no layout shifts.
 - Automated PageSpeed testing is part of the pipeline.
 - Real-world performance is validated across multiple devices and network conditions.
 
