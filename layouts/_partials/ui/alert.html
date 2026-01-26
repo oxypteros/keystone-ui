@@ -1,0 +1,63 @@
+{{- $type := .type | default "default" -}}
+{{- $title := .title -}}
+{{- $iconParam := .icon -}}
+
+{{- $finalContent := "" -}}
+{{- if .content -}}
+  {{- /* Called as a shortcode */ -}}
+  {{- $finalContent = .content | strings.TrimSpace | markdownify -}}
+{{- else -}}
+  {{- /* Called as a Decorator (HTML content) */ -}}
+  {{- $finalContent = (inner .) | strings.TrimSpace | safeHTML -}}
+{{- end -}}
+
+{{- $iconName := "" -}}
+{{- $isIconDisabled := eq $iconParam "false" -}}
+
+{{- if not $isIconDisabled -}}
+  {{- $iconMap := dict
+    "error"       "alert/circle-x"
+    "destructive" "alert/circle-x"
+    "warning"     "alert/circle-alert"
+    "success"     "alert/circle-check"
+    "question"    "alert/circle-question-mark"
+    "info"        "alert/info"
+    "default"     "alert/circle"
+  -}}
+
+  {{- /* Determine the icon name */ -}}
+  {{- $iconName = $iconParam | default (index $iconMap $type | default "default") -}}
+{{- end -}}
+
+{{- $id := printf "ks-alert-%d" (now.UnixNano) -}}
+{{- $hasContent := gt (len $finalContent) 0 -}}
+<div
+  class="ks-alert variant-{{ $type }}"
+  role="note"
+  {{- with $title }}aria-labelledby="{{ $id }}"{{- end }}
+>
+  {{- if $iconName }}
+    {{- if templates.Exists "_partials/ui/icon.html" -}}
+      {{- partial "ui/icon" (dict "name" $iconName) -}}
+    {{- else }}
+      {{- /* Empty `div` to maintain the grid layout placement */}}
+      <div></div>
+      {{- warnf "Keystone UI [Alert]: Icon partial not found. Skipping icon '%s'." $iconName -}}
+    {{- end }}
+  {{- else }}
+    {{- /* Empty `div` to maintain the grid layout placement */}}
+    <div></div>
+  {{- end }}
+  <div>
+    {{- with $title }}
+      <div id="{{ $id }}" class="ks-alert-title" data-slot="alert-title">
+        {{ . }}
+      </div>
+    {{- end }}
+    {{- if $hasContent }}
+      <div class="ks-alert-description" data-slot="alert-description">
+        {{ $finalContent }}
+      </div>
+    {{- end }}
+  </div>
+</div>
