@@ -1,0 +1,7 @@
+{{ partial "ui/alert" (dict
+  "title"   (.Get "title")
+  "type"    (.Get "type")
+  "icon"    (.Get "icon")
+  "content" .Inner
+  )
+}}
