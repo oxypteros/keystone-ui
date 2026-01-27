@@ -1,0 +1,76 @@
+{{- $type := .type | default "default" -}}
+{{- $title := .title -}}
+{{- $iconParam := .icon -}}
+
+{{- $finalContent := "" -}}
+{{- if .content -}}
+  {{- /* Called as a shortcode */ -}}
+  {{- $finalContent = .content | strings.TrimSpace | markdownify -}}
+{{- else -}}
+  {{- /* Called as a Decorator (HTML content) */ -}}
+  {{- $finalContent = (inner .) | strings.TrimSpace | safeHTML -}}
+{{- end -}}
+
+{{- $hasContent := gt (len $finalContent) 0 -}}
+
+{{- $iconName := "" -}}
+{{- $isIconDisabled := eq $iconParam "false" -}}
+
+{{- /* Icon Logic */}}
+{{- if not $isIconDisabled -}}
+  {{- /*
+    Default Mapping.
+    These files MUST exist in `assets/icons/callout/` for the component to work out-of-the-box.
+  */}}
+  {{- $iconMap := dict
+    "error"       "callout/circle-x"
+    "warning"     "callout/circle-alert"
+    "success"     "callout/circle-check"
+    "question"    "callout/circle-question-mark"
+    "info"        "callout/info"
+    "default"     "callout/circle"
+  -}}
+
+  {{- $iconName = $iconParam | default (index $iconMap $type | default "default") -}}
+{{- end -}}
+
+{{- /* Generate ID only if Title exists to avoid creating unused IDs */}}
+{{- $id := "" -}}
+{{- if $title -}}
+  {{- $id = printf "ks-callout-title-%d" (now.UnixNano) -}}
+{{- end -}}
+
+
+<div
+  class="ks-callout variant-{{ $type }}"
+  role="note"
+  {{- with $title }}aria-labelledby="{{ $id }}"{{- end }}
+>
+  {{- /* Icon Column */}}
+  {{- if $iconName }}
+    {{- if templates.Exists "_partials/ui/icon.html" -}}
+      {{- partial "ui/icon" (dict "name" $iconName) -}}
+    {{- else }}
+      {{- /* Empty div to keep grid alignment if icon exist but icon partial is missing */}}
+      <div></div>
+      {{- warnf "Keystone UI [callout]: Icon partial not found. Skipping icon '%s'." $iconName -}}
+    {{- end }}
+  {{- else }}
+    {{- /* Empty div to keep grid alignment if icon is missing */}}
+    <div></div>
+  {{- end }}
+
+  {{- /* Content Column */}}
+  <div>
+    {{- with $title }}
+      <div id="{{ $id }}" class="ks-callout-title">
+        {{ . }}
+      </div>
+    {{- end }}
+    {{- if $hasContent }}
+      <div class="ks-callout-description">
+        {{- $finalContent -}}
+      </div>
+    {{- end }}
+  </div>
+</div>
