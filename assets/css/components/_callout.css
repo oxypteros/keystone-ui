@@ -1,21 +1,21 @@
 @layer components {
-  .ks-alert {
+  .ks-callout {
     @apply relative;
-    @apply grid grid-cols-[0_1fr] items-start gap-y-0.5 has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3;
+    @apply grid grid-cols-[0_1fr] items-start gap-y-0.5;
     @apply my-3 w-full px-4 py-3;
     @apply text-sm;
-    @apply rounded-lg border;
-    @apply [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current;
+    @apply border-border rounded-lg border;
+    @apply has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current;
 
-    .ks-alert-title {
+    .ks-callout-title {
       @apply col-start-2;
       @apply min-h-4;
       @apply line-clamp-1 font-medium tracking-tight;
     }
 
-    .ks-alert-description {
+    .ks-callout-description {
       @apply col-start-2;
-      @apply grid justify-items-start gap-1;
+      @apply mt-1.5;
       @apply text-muted-foreground text-sm [&_p]:leading-relaxed;
     }
 
@@ -23,7 +23,7 @@
     &.variant-default {
       @apply text-card-foreground bg-card;
     }
-    &.variant-destructive {
+    &.variant-error {
       @apply text-destructive border-red-200 bg-red-50/20 dark:border-red-900/50 dark:bg-red-950/30;
     }
     &.variant-info {
