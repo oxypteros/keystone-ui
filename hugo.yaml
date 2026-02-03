@@ -1,6 +1,6 @@
 baseURL: 'https://example.org/'
 languageCode: 'en-US'
-title: 'Keystone UI'
+title: 'Keystone UI Starter'
 
 menus:
   main:
