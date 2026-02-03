@@ -1,0 +1,53 @@
+{{- $title := .title | default "Accordion Item" -}}
+{{- $icon := .icon | default "accordion/chevron-down" -}}
+
+{{- $uniqueID := substr (md5 (printf "%s%p" $title .)) 0 8 -}}
+{{- $uid := printf "ks-accordion-%s" $uniqueID -}}
+
+{{- $finalContent := "" -}}
+{{- if .content }}
+  {{- /* Called as a shortcode */}}
+  {{- $finalContent = .content | strings.TrimSpace | markdownify -}}
+{{- else }}
+  {{- /* Called as a Decorator (HTML content) */}}
+  {{- $finalContent = (inner .) | strings.TrimSpace | safeHTML -}}
+{{- end }}
+
+
+<div x-data="{ id: '{{ $uid }}' }">
+  <div role="heading" data-ks-level-placeholder>
+    <button
+      type="button"
+      data-accordion-trigger
+      @click="toggle(id)"
+      :aria-expanded="isOpen(id)"
+      :aria-controls="'panel-' + id"
+      :id="'tab-' + id"
+    >
+      {{- $title -}}
+      {{- if $icon }}
+        {{- if templates.Exists "_partials/ui/icon.html" -}}
+          {{- partial "ui/icon" (dict "name" $icon) }}
+        {{- else }}
+          {{- warnf "Keystone UI [Accordion]: Icon partial not found. Using fallback icon." -}}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        {{- end }}
+      {{- end }}
+    </button>
+  </div>
+  <div :id="'panel-' + id" role="region" :aria-labelledby="'tab-' + id" x-show="isOpen(id)" x-collapse x-cloak>
+    <div class="ks-panel">
+      {{- $finalContent -}}
+    </div>
+  </div>
+</div>
