@@ -1,10 +1,9 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
   <div class="ks-prose">{{ .Content }}</div>
-  {{ range site.RegularPages }}
+
+  {{- range site.RegularPages }}
     <section>
       <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      {{ .Summary }}
     </section>
-  {{ end }}
-{{ end }}
+  {{- end }}
+{{- end }}
