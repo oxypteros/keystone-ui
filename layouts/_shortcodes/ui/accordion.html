@@ -1,0 +1,17 @@
+{{- $path := "_partials/ui/accordion.html" -}}
+{{- $partial := "ui/accordion" -}}
+{{- if templates.Exists $path }}
+  {{- partial $partial (dict
+    "multiple" (.Get "multiple")
+    "level"    (.Get "level")
+    "content"  .Inner
+    )
+  -}}
+{{- else }}
+  {{- $errorMsg := printf "Keystone UI: Missing partial `%s`." $path -}}
+  {{- if hugo.IsProduction }}
+    {{- errorf $errorMsg -}}
+  {{- else }}
+    {{- warnf $errorMsg -}}
+  {{- end }}
+{{- end }}
