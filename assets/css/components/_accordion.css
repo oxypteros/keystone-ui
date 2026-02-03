@@ -1,0 +1,26 @@
+@layer components {
+  .ks-accordion {
+    @apply w-full max-w-lg;
+    @apply text-sm;
+    @apply divide-border divide-y overflow-hidden;
+
+    button {
+      @apply flex items-center justify-between gap-6;
+      @apply w-full px-4 py-3;
+      @apply hover:bg-muted aria-expanded:bg-muted;
+      @apply text-left font-medium;
+      @apply rounded-sm border border-transparent;
+      @apply transition-all duration-300;
+      @apply [&[aria-expanded=true]>svg]:-rotate-180;
+      @apply focus-visible:border-ring focus-visible:ring-ring/50 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-inset;
+    }
+    svg {
+      @apply size-4 shrink-0 transition-transform duration-300;
+    }
+    .ks-panel {
+      @apply px-4 py-3 [&_p]:mb-[2em] [&_p:last-child]:mb-[1em];
+      @apply text-muted-foreground;
+      @apply [&_a]:underline [&_a]:underline-offset-2;
+    }
+  }
+}
