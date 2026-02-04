@@ -5,7 +5,7 @@
   {{- errorf "Keystone UI: ui/tabs requires 'items'." }}
 {{- end }}
 
-{{- $variant := .variant | default "pill" -}}
+{{- $variant := .variant | default "line" -}}
 
 {{- $trackStyle := "" }}
 {{- if eq $variant "line" }}
@@ -19,6 +19,7 @@
 {{- $safeDefault := $default | lower | replaceRE "[^a-z0-9]+" "-" | replaceRE "^-+|-$" "" -}}
 
 {{- $label:= .label -}}
+
 
 <div x-data="ksTabs({ default: '{{ $safeDefault }}' })" x-id="['ks-tab', 'ks-panel']" class="ks-tabs-wrapper">
   <div class="{{ $trackStyle }}">
