@@ -1,0 +1,30 @@
+{{- $multiple := false -}}
+{{- $level := .level | default 2 | int -}}
+
+{{- if reflect.IsMap . }}
+  {{- $multiple = .multiple | default false -}}
+{{- end }}
+
+{{- $jsMultiple := "false" -}}
+{{- if or (eq $multiple true) (eq $multiple "true") }}
+  {{- $jsMultiple = "true" -}}
+{{- end }}
+
+{{- $prevLevel := .Page.Store.Get "ks_accordion_level" -}}
+{{- .Page.Store.Set "ks_accordion_level" $level -}}
+
+{{- $content := "" -}}
+{{- if .content -}}
+  {{- $content = .content | strings.TrimSpace -}}
+{{- else -}}
+  {{- $content = inner . | strings.TrimSpace -}}
+{{- end -}}
+
+{{- $targetStr := "data-ks-level-placeholder" -}}
+{{- $replacementStr := printf "aria-level=\"%d\"" $level -}}
+{{- $finalContent := replace $content $targetStr $replacementStr -}}
+
+
+<div x-data="ksAccordion({{ $jsMultiple }})" @keydown="handleKeydown" class="ks-accordion">
+  {{- $finalContent | safeHTML -}}
+</div>

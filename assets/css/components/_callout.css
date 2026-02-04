@@ -1,0 +1,42 @@
+@layer components {
+  .ks-callout {
+    @apply relative;
+    @apply grid grid-cols-[0_1fr] items-start gap-y-0.5;
+    @apply my-3 w-full px-4 py-3;
+    @apply text-sm;
+    @apply border-border rounded-lg border;
+    @apply has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current;
+
+    .ks-callout-title {
+      @apply col-start-2;
+      @apply min-h-4;
+      @apply line-clamp-1 font-medium tracking-tight;
+    }
+
+    .ks-callout-description {
+      @apply col-start-2;
+      @apply mt-1.5;
+      @apply text-muted-foreground text-sm [&_p]:leading-relaxed;
+    }
+
+    /* Variants */
+    &.variant-default {
+      @apply text-card-foreground bg-card;
+    }
+    &.variant-error {
+      @apply text-destructive border-red-200 bg-red-50/20 dark:border-red-900/50 dark:bg-red-950/30;
+    }
+    &.variant-info {
+      @apply border-blue-200 bg-blue-50/20 text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-100;
+    }
+    &.variant-question {
+      @apply border-cyan-200 bg-cyan-50/20 text-cyan-800 dark:border-cyan-900/50 dark:bg-cyan-950/30 dark:text-cyan-100 [&>svg]:text-current;
+    }
+    &.variant-success {
+      @apply border-emerald-200 bg-emerald-50/20 text-green-800 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-green-100 [&>svg]:text-current;
+    }
+    &.variant-warning {
+      @apply border-amber-200 bg-amber-50/20 text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100 [&>svg]:text-current;
+    }
+  }
+}

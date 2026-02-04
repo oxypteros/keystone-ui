@@ -1,0 +1,13 @@
+{{- /* Docs: https://keystone.oxypteros/docs/components/tabs/ */}}
+
+{{- $items := split (.Get "items") "," -}}
+{{- $variant := .Get "variant" | default "line" -}}
+{{- $label := .Get "label" -}}
+
+{{- partial "ui/tabs.html" (dict
+  "items"   $items
+  "content" .Inner
+  "variant" $variant
+  "label"   $label
+  )
+-}}

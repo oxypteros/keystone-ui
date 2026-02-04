@@ -1,0 +1,9 @@
+{{- $currentYear := dateFormat "2006" now -}}
+{{- $estYear := "2026" -}}
+{{- $shortYear := dateFormat "06" now -}}
+{{- $yearDisplay := cond (eq $estYear $currentYear) (string $currentYear) (printf "%v-%v" $estYear $shortYear) -}}
+
+
+<div class="flex items-center justify-between gap-4 px-4 py-2">
+  <small>&copy; <span class="font-mono">{{- $yearDisplay -}}</span></small>
+</div>

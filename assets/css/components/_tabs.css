@@ -1,0 +1,68 @@
+@layer components {
+  /* Tabs */
+  .ks-tabs-wrapper {
+    @apply flex w-full flex-col gap-4;
+  }
+  .ks-tabs-track {
+    @apply w-full;
+  }
+  .ks-tabs-tablist {
+    @apply flex gap-2;
+    @apply snap-x snap-mandatory overflow-x-auto;
+    @apply p-1;
+    @apply no-scrollbar;
+  }
+  .ks-tabs-trigger {
+    @apply snap-start;
+    @apply shrink-0;
+    @apply text-sm font-medium whitespace-nowrap;
+    @apply transition-all duration-300;
+    @apply focus-visible:border-ring focus-visible:ring-ring focus-visible:outline-ring focus:outline-none focus-visible:ring-2;
+  }
+
+  /** Variant: Line **/
+  .ks-tabs-line {
+    @apply inline-flex items-center justify-center;
+    @apply min-h-8 w-fit px-1 pt-0.75;
+    @apply text-muted-foreground bg-transparent;
+    @apply rounded-none border-b-2;
+  }
+  .ks-tabs-line-active {
+    @apply text-foreground;
+    @apply border-ring;
+  }
+  .ks-tabs-line-inactive {
+    @apply border-transparent;
+    @apply hover:border-ring/70 hover:text-foreground;
+  }
+
+  /** Variant: Pill **/
+  .ks-tabs-track-pill {
+    @apply w-fit;
+    @apply bg-muted/50;
+    @apply rounded-md border;
+  }
+  .ks-tabs-pill {
+    @apply px-2 py-1;
+    @apply border-border/70 rounded-md border;
+  }
+  .ks-tabs-pill-active {
+    @apply bg-background;
+    @apply border-border;
+    @apply shadow-sm;
+  }
+  .ks-tabs-pill-inactive {
+    @apply text-muted-foreground bg-muted;
+    @apply hover:bg-background/70 hover:border-border hover:text-foreground/70 hover:shadow-sm;
+  }
+
+  /** Tabpanel Styles **/
+  .ks-tabs-content-wrapper {
+    @apply w-full;
+    @apply text-sm;
+  }
+  .ks-tabs-content {
+    @apply flex-1;
+  }
+  /* .ks-tabs-content-shortcode {} */
+}
