@@ -6,6 +6,7 @@ public/
 resources/
 hugo_stats.json
 jsconfig.json
+content/*
 
 # Standard JS 
 node_modules/
