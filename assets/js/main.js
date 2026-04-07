@@ -15,16 +15,16 @@ Alpine.plugin(collapse);
 // IMPORT MODULES
 // (Uncomment to enable modules)
 
-import accordionModule from './modules/accordion.js';
-import tabsModule from './modules/tabs';
-import tooltipModule from './modules/tooltip.js';
+// import accordionModule from './modules/accordion.js';
+// import tabsModule from './modules/tabs';
+// import tooltipModule from './modules/tooltip.js';
 
 // INITIALIZE MODULES
 // (Uncomment to Init modules)
 
-accordionModule(Alpine);
-tabsModule(Alpine);
-tooltipModule(Alpine);
+// accordionModule(Alpine);
+// tabsModule(Alpine);
+// tooltipModule(Alpine);
 
 // START
 window.Alpine = Alpine;
