@@ -17,7 +17,7 @@ Alpine.plugin(collapse);
 
 // import accordionModule from './modules/accordion.js';
 // import tabsModule from './modules/tabs';
-//import tooltipModule from './modules/tooltip.js';
+// import tooltipModule from './modules/tooltip.js';
 
 // INITIALIZE MODULES
 // (Uncomment to Init modules)
