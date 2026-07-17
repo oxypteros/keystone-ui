@@ -1,0 +1,56 @@
+{{- $triggerLabel := .trigger | default "Open Dialog" -}}
+{{- $title := .title | default "" -}}
+{{- $description := .description | default "" -}}
+{{- $open := .open | default false -}}
+
+{{- $bodyContent := "" -}}
+{{- if .content }}
+  {{- $bodyContent = .content | strings.TrimSpace -}}
+{{- else }}
+  {{- $bodyContent = inner . | strings.TrimSpace -}}
+{{- end -}}
+
+
+<div x-data="ksDialog({ open: {{ $open }} })" x-id="['ks-dialog-title', 'ks-dialog-description']">
+  <button type="button" @click="openDialog()" class="btn variant-default size-default">
+    {{- $triggerLabel -}}
+  </button>
+
+  <template x-teleport="body">
+    <div x-show="open" x-cloak x-trap.noscroll="open" @keydown.escape.window="open && closeDialog()" class="ks-dialog-container">
+      <div @click="closeDialog()" class="ks-dialog-overlay" aria-hidden="true"></div>
+
+      <div
+        tabindex="-1"
+        role="dialog"
+        aria-modal="true"
+        {{- with $title }}
+          :aria-labelledby="$id('ks-dialog-title')"
+        {{- end }}
+        class="ks-dialog-content"
+      >
+        <div class="ks-dialog-header">
+          {{- if $title }}
+            <h2 :id="$id('ks-dialog-title')" class="ks-dialog-title">{{ $title }}</h2>
+          {{- end }}
+          {{- if $description }}
+            <p :id="$id('ks-dialog-description')" class="ks-dialog-description">{{ $description }}</p>
+          {{- end }}
+        </div>
+
+        <div class="mt-4">
+          {{- $bodyContent | safeHTML -}}
+        </div>
+
+        <button
+          type="button"
+          @click="closeDialog()"
+          class="ks-dialog-close btn variant-ghost size-icon"
+          aria-label="Close"
+        >
+          {{ partial "ui/icon" (dict "name" "dialog/x") -}}
+        </button>
+      </div>
+    </div>
+  </template>
+</div>
