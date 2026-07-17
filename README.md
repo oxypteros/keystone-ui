@@ -21,7 +21,7 @@ We provide the architectural foundation. You build the rest.
 
 Each component is:
 
-- Fully functional out of the box
+- Fully functional and accessible out of the box
 - Designed to be modified, extended, or stripped down
 - Free from hidden abstractions or runtime magic
 

@@ -1,6 +1,6 @@
 {
   "name": "keystone-ui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Keystone UI Hugo starter boilerplate",
   "homepage": "https://github.com/oxypteros/keystone-ui#readme",
   "bugs": {
@@ -25,25 +25,28 @@
     "setup": "npm install && npx playwright install --with-deps"
   },
   "dependencies": {
-    "@alpinejs/anchor": "^3.15.11",
-    "@alpinejs/collapse": "^3.15.11",
-    "@alpinejs/csp": "^3.15.11",
-    "@alpinejs/focus": "^3.15.11"
+    "@alpinejs/anchor": "^3.15.12",
+    "@alpinejs/collapse": "^3.15.12",
+    "@alpinejs/csp": "^3.15.12",
+    "@alpinejs/focus": "^3.15.12"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.11.0",
-    "@playwright/test": "^1.59.1",
-    "@tailwindcss/cli": "^4.2.2",
-    "@types/node": "^25.5.2",
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
+    "@tailwindcss/cli": "^4.3.3",
+    "@types/node": "^26.1.1",
     "glob": "^13.0.6",
-    "playwright": "^1.59.1",
-    "prettier": "^3.7.4",
+    "playwright": "^1.61.1",
+    "prettier": "^3.9.5",
     "prettier-plugin-go-template": "^0.0.15",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^4.2.2"
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^4.3.3"
   },
   "engines": {
-    "node": ">=24.12.0",
-    "hugo": "0.160.0"
+    "node": "~24.18.0",
+    "hugo": "0.164.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.1": true
   }
 }
