@@ -1,0 +1,32 @@
+@layer components {
+  .ks-dialog-container {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+  }
+  .ks-dialog-overlay {
+    @apply absolute inset-0 bg-black/80 supports-backdrop-filter:backdrop-blur-xs;
+  }
+  .ks-dialog-content {
+    @apply relative z-10 w-full max-w-lg;
+    @apply bg-popover text-popover-foreground;
+    @apply border-border rounded-lg border shadow-lg;
+    @apply p-6;
+  }
+  .ks-dialog-header {
+    @apply flex flex-col gap-1.5 text-center sm:text-left;
+  }
+  .ks-dialog-footer {
+    @apply flex flex-col-reverse gap-2 sm:flex-row sm:justify-end;
+  }
+  .ks-dialog-title {
+    @apply text-lg leading-none font-semibold tracking-tight;
+  }
+  .ks-dialog-description {
+    @apply text-muted-foreground text-sm;
+  }
+  .ks-dialog-close {
+    @apply absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100;
+    @apply focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+    @apply size-4;
+    @apply [&_svg]:size-4;
+  }
+}
