@@ -1,6 +1,6 @@
 {
   "name": "keystone-ui",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Keystone UI Hugo starter boilerplate",
   "homepage": "https://github.com/oxypteros/keystone-ui#readme",
   "bugs": {
@@ -17,6 +17,8 @@
   "scripts": {
     "format": "prettier --write .",
     "ci:check": "prettier --check .",
+    "lint": "eslint 'assets/js/**/*.js' 'tests/**/*.js' 'playwright.config.js'",
+    "lint:fix": "eslint --fix 'assets/js/**/*.js' 'tests/**/*.js' 'playwright.config.js'",
     "dev": "hugo server",
     "build": "hugo --minify",
     "test": "playwright test",
@@ -32,10 +34,13 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.61.1",
     "@tailwindcss/cli": "^4.3.3",
     "@types/node": "^26.1.1",
+    "eslint": "^10.7.0",
     "glob": "^13.0.6",
+    "globals": "^17.7.0",
     "playwright": "^1.61.1",
     "prettier": "^3.9.5",
     "prettier-plugin-go-template": "^0.0.15",
