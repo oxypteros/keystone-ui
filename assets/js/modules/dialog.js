@@ -4,11 +4,13 @@ export default function dialogModule(Alpine) {
 
     openDialog() {
       this.open = true;
-      document.querySelector('#main-content')?.setAttribute('inert', '');
+      document.querySelector('#ks-main-hook')?.setAttribute('inert', '');
+      document.body.style.overflow = 'hidden';
     },
     closeDialog() {
       this.open = false;
-      document.querySelector('#main-content')?.removeAttribute('inert');
+      document.querySelector('#ks-main-hook')?.removeAttribute('inert');
+      document.body.style.overflow = '';
     },
   }));
 }
