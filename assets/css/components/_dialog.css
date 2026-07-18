@@ -1,6 +1,6 @@
 @layer components {
   .ks-dialog-container {
-    @apply fixed inset-0 z-50 flex items-center justify-center;
+    @apply fixed inset-0 z-90 flex items-center justify-center;
   }
   .ks-dialog-overlay {
     @apply absolute inset-0 bg-black/80 supports-backdrop-filter:backdrop-blur-xs;
