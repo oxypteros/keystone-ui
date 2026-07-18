@@ -17,7 +17,13 @@
   </button>
 
   <template x-teleport="body">
-    <div x-show="open" x-cloak x-trap.noscroll="open" @keydown.escape.window="open && closeDialog()" class="ks-dialog-container">
+    <div
+      x-show="open"
+      x-cloak
+      x-trap.noscroll="open"
+      @keydown.escape.window="open && closeDialog()"
+      class="ks-dialog-container"
+    >
       <div @click="closeDialog()" class="ks-dialog-overlay" aria-hidden="true"></div>
 
       <div

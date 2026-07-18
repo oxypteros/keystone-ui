@@ -3,7 +3,7 @@ export default function tooltipModule(Alpine) {
     visible: false,
     openTimer: null,
     closeTimer: null,
-    
+
     // Configurable delays
     // delayIn prevents "flashing" from adjacent items
     // delayOut creates the "bridge" for the mouse
@@ -15,9 +15,11 @@ export default function tooltipModule(Alpine) {
       // If another opens, and I am not the one, I must die immediately.
       this.$watch('visible', (value) => {
         if (value) {
-          window.dispatchEvent(new CustomEvent('ks-tooltip:opened', {
-            detail: { id: this.$id('ks-tooltip') }
-          }));
+          window.dispatchEvent(
+            new CustomEvent('ks-tooltip:opened', {
+              detail: { id: this.$id('ks-tooltip') },
+            }),
+          );
         }
       });
     },
@@ -25,7 +27,7 @@ export default function tooltipModule(Alpine) {
     open() {
       // Clear any pending close actions
       if (this.closeTimer) clearTimeout(this.closeTimer);
-      
+
       // If already open, do nothing
       if (this.visible) return;
 
@@ -54,22 +56,34 @@ export default function tooltipModule(Alpine) {
 
     // Bindings
     trigger: {
-      ['@mouseenter']() { this.open(); },
-      ['@mouseleave']() { this.scheduleClose(); },
-      ['@focus']() { this.open(); },
-      ['@blur']() { this.scheduleClose(); },
-      ['@keydown.escape.window']() { this.close(); },
-      
+      ['@mouseenter']() {
+        this.open();
+      },
+      ['@mouseleave']() {
+        this.scheduleClose();
+      },
+      ['@focus']() {
+        this.open();
+      },
+      ['@blur']() {
+        this.scheduleClose();
+      },
+      ['@keydown.escape.window']() {
+        this.close();
+      },
+
       // Accessibility
-      [':aria-describedby']() { return this.$id('ks-tooltip'); },
-      
+      [':aria-describedby']() {
+        return this.$id('ks-tooltip');
+      },
+
       // Event Listener on the Window
       ['@ks-tooltip:opened.window'](event) {
         // If the opened tooltip is NOT me, close immediately.
         if (event.detail.id !== this.$id('ks-tooltip')) {
           this.close();
         }
-      }
+      },
     },
-  })); 
+  }));
 }

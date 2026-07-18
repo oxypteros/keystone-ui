@@ -1,7 +1,7 @@
 name: 🐛 Defect Report
 description: Report a bug or accessibility failure.
-title: "fix: "
-labels: ["fix: defect", "triage"]
+title: 'fix: '
+labels: ['fix: defect', 'triage']
 body:
   - type: textarea
     id: description
