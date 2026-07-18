@@ -44,14 +44,14 @@ export default function tabsModule(Alpine) {
 
     // Navigation Logic
     next() {
-      let index = this.items.indexOf(this.current);
-      let nextIndex = (index + 1) % this.items.length;
+      const index = this.items.indexOf(this.current);
+      const nextIndex = (index + 1) % this.items.length;
       this.activate(this.items[nextIndex]);
     },
 
     prev() {
-      let index = this.items.indexOf(this.current);
-      let prevIndex = (index - 1 + this.items.length) % this.items.length;
+      const index = this.items.indexOf(this.current);
+      const prevIndex = (index - 1 + this.items.length) % this.items.length;
       this.activate(this.items[prevIndex]);
     },
 

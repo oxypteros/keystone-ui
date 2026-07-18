@@ -1,7 +1,7 @@
 name: 🛠️ Refactor Proposal
 description: Propose improvements to existing logic, architecture, or CSS (No new features).
-title: "refactor: "
-labels: ["refactor", "triage"]
+title: 'refactor: '
+labels: ['refactor', 'triage']
 body:
   - type: input
     id: target
@@ -25,16 +25,16 @@ body:
     attributes:
       label: Proposed Solution (The Blueprint)
       description: Describe the structural changes.
-  
+
   - type: dropdown
     id: impact
     attributes:
       label: Impact Assessment
       options:
-        - "Internal logic only (Safe)"
-        - "Performance optimization"
-        - "Accessibility"
-        - "API Change (Breaking Change)"
+        - 'Internal logic only (Safe)'
+        - 'Performance optimization'
+        - 'Accessibility'
+        - 'API Change (Breaking Change)'
     validations:
       required: true
 

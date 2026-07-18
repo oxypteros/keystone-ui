@@ -1,0 +1,19 @@
+{{- $path := "_partials/ui/dialog.html" -}}
+{{- $partial := "ui/dialog" }}
+{{- if templates.Exists $path -}}
+  {{- partial $partial (dict
+    "trigger"     (.Get "trigger")
+    "title"       (.Get "title")
+    "description" (.Get "description")
+    "open"        (.Get "open")
+    "content"     .Inner
+    )
+  -}}
+{{- else -}}
+  {{- $errorMsg := printf "Keystone UI: Missing partial `%s`." $path -}}
+  {{- if hugo.IsProduction -}}
+    {{- errorf $errorMsg -}}
+  {{- else }}
+    {{- warnf $errorMsg -}}
+  {{- end -}}
+{{- end -}}
